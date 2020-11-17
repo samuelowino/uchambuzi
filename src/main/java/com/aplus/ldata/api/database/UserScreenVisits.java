@@ -1,5 +1,6 @@
 package com.aplus.ldata.api.database;
 
+import com.aplus.ldata.api.database.meta.Metadata;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import javax.persistence.Id;
 @ToString
 
 @Entity
-public class UserScreenVisits extends Metadata{
+public class UserScreenVisits extends Metadata {
 
     @Id
     @GeneratedValue

@@ -1,5 +1,6 @@
 package com.aplus.ldata.api.database;
 
+import com.aplus.ldata.api.database.meta.Metadata;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import javax.persistence.Entity;
 @ToString
 
 @Entity
-public class GeneralModuleStats extends Metadata{
+public class GeneralModuleStats extends Metadata {
 
     private Long id;
     private String userTag;

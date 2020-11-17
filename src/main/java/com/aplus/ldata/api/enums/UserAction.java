@@ -1,7 +1,6 @@
 package com.aplus.ldata.api.enums;
 
 public enum UserAction {
-
     CREATE_TASK,
     GOOGLE_REGISTRATION,
     EMAIL_PASSWORD_REGISTRATION,

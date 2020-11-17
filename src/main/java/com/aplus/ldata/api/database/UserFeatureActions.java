@@ -1,5 +1,6 @@
 package com.aplus.ldata.api.database;
 
+import com.aplus.ldata.api.database.meta.Metadata;
 import com.aplus.ldata.api.enums.ModuleName;
 import com.aplus.ldata.api.enums.UserAction;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.Date;
 @ToString
 
 @Entity
-public class UserFeatureActions extends Metadata{
+public class UserFeatureActions extends Metadata {
 
     @Id
     @GeneratedValue

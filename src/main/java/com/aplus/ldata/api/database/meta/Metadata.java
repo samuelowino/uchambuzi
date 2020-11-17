@@ -1,4 +1,4 @@
-package com.aplus.ldata.api.database;
+package com.aplus.ldata.api.database.meta;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
