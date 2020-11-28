@@ -6,15 +6,18 @@ import com.aplus.ldata.api.controller.base.GenericController;
 import com.aplus.ldata.api.database.GeneralModuleStats;
 import com.aplus.ldata.api.database.repository.GeneralModuleStatsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController(ApiConstants.BASE_URL + "/module/stats")
+@RequestMapping(ApiConstants.BASE_URL + "/module/stats")
+@RestController
 public class GeneralModuleStatsController implements GenericController<GeneralModuleStats> {
 
     @Autowired
@@ -22,28 +25,21 @@ public class GeneralModuleStatsController implements GenericController<GeneralMo
 
     @PostMapping("/")
     @Override
-    public ApiResponse<Boolean> create(GeneralModuleStats data) {
+    public ApiResponse<Boolean> create(@RequestBody GeneralModuleStats data) {
         repository.save(data);
-        return new ApiResponse<>(true, "Success.");
-    }
-
-    @DeleteMapping("/")
-    @Override
-    public ApiResponse<Boolean> delete(GeneralModuleStats data) {
-        repository.delete(data);
         return new ApiResponse<>(true, "Success.");
     }
 
     @GetMapping("/")
     @Override
-    public ApiResponse<List<GeneralModuleStats>> getAll(GeneralModuleStats data) {
+    public ApiResponse<List<GeneralModuleStats>> getAll() {
         List<GeneralModuleStats> dataList = repository.findAll();
         return new ApiResponse<List<GeneralModuleStats>>(dataList, "Success.");
     }
 
     @GetMapping("/{uuid}/")
     @Override
-    public ApiResponse<GeneralModuleStats> find(String uuid) {
+    public ApiResponse<GeneralModuleStats> find(@PathVariable String uuid) {
         Optional<GeneralModuleStats> optionsData = repository.findByUuid(uuid);
         GeneralModuleStats data = optionsData.get();
         return new ApiResponse<>(data, "Complete");

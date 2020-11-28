@@ -6,15 +6,18 @@ import com.aplus.ldata.api.controller.base.GenericController;
 import com.aplus.ldata.api.database.ExitScreen;
 import com.aplus.ldata.api.database.repository.ExitScreenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController(ApiConstants.BASE_URL + "/screen")
+@RequestMapping(ApiConstants.BASE_URL + "/screen")
+@RestController
 public class ExitScreenController implements GenericController<ExitScreen> {
 
     @Autowired
@@ -22,30 +25,24 @@ public class ExitScreenController implements GenericController<ExitScreen> {
 
     @PostMapping("/")
     @Override
-    public ApiResponse<Boolean> create(ExitScreen data) {
+    public ApiResponse<Boolean> create(@RequestBody ExitScreen data) {
         repository.save(data);
-        return new ApiResponse<>(true, "Success.");
-    }
-
-    @DeleteMapping("/")
-    @Override
-    public ApiResponse<Boolean> delete(ExitScreen data) {
-        repository.delete(data);
         return new ApiResponse<>(true, "Success.");
     }
 
     @GetMapping("/")
     @Override
-    public ApiResponse<List<ExitScreen>> getAll(ExitScreen data) {
+    public ApiResponse<List<ExitScreen>> getAll() {
         List<ExitScreen> dataList = repository.findAll();
         return new ApiResponse<List<ExitScreen>>(dataList, "Success.");
     }
 
     @GetMapping("/{uuid}/")
     @Override
-    public ApiResponse<ExitScreen> find(String uuid) {
+    public ApiResponse<ExitScreen> find(@PathVariable String uuid) {
         Optional<ExitScreen> optionsData = repository.findByUuid(uuid);
         ExitScreen data = optionsData.get();
         return new ApiResponse<>(data, "Complete");
     }
 }
+

@@ -7,10 +7,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 import java.util.Date;
+import java.util.UUID;
 
 
 @Getter
@@ -22,12 +24,12 @@ import java.util.Date;
 public class Metadata {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id ;
     @Version
-    private Integer version;
-    private String uuid;
-    private Date createdAt;
+    private Integer version = 1;
+    private String uuid = UUID.randomUUID().toString();
+    private Date createdAt = new Date();
     private Date voidedAt;
 
 }

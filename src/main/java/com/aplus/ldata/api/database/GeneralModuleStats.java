@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Getter
 @Setter
@@ -18,7 +20,10 @@ import javax.persistence.Entity;
 @Entity
 public class GeneralModuleStats extends Metadata {
 
+    @Id
+    @GeneratedValue
     private Long id;
     private String userTag;
-    private String dataPoints;
+    private String moduleName;
+    private String event;
 }
