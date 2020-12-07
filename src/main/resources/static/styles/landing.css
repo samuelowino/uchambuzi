@@ -1,0 +1,12 @@
+h1 {
+    color: white;
+}
+
+.side-navigation {
+    border: 12px;
+    border-color: whitesmoke;
+}
+
+#side-nav {
+    border-color: whitesmoke;
+}
