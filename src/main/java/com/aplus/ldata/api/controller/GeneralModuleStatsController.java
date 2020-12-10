@@ -5,7 +5,13 @@ import com.aplus.ldata.api.controller.base.ApiResponse;
 import com.aplus.ldata.api.controller.base.GenericController;
 import com.aplus.ldata.api.database.GeneralModuleStats;
 import com.aplus.ldata.api.database.repository.GeneralModuleStatsRepository;
+import com.aplus.ldata.api.resource.ModuleStatsResource;
+import com.aplus.ldata.constants.ModuleConstants;
+import com.fasterxml.jackson.databind.Module;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +26,8 @@ import java.util.Optional;
 @RestController
 public class GeneralModuleStatsController implements GenericController<GeneralModuleStats> {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(GeneralModuleStatsController.class.getSimpleName());
+
     @Autowired
     private GeneralModuleStatsRepository repository;
 
@@ -30,12 +38,21 @@ public class GeneralModuleStatsController implements GenericController<GeneralMo
         return new ApiResponse<>(true, "Success.");
     }
 
-    @GetMapping("/")
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public ApiResponse<List<GeneralModuleStats>> getAll() {
-        List<GeneralModuleStats> dataList = repository.findAll();
-        return new ApiResponse<List<GeneralModuleStats>>(dataList, "Success.");
+    public List<GeneralModuleStats> getAll() {
+        return repository.findAll();
     }
+
+    @GetMapping(value = "/summary/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModuleStatsResource getModuleStatsSummary() {
+        int habitCount = repository.getModuleStatsByName(ModuleConstants.HABIT_MODULE).size();
+        int financeCount = repository.getModuleStatsByName(ModuleConstants.FINANCE_MODULE).size();
+        int wellnessCount = repository.getModuleStatsByName(ModuleConstants.WELLNESS_MODULE).size();
+        int productivityCount = repository.getModuleStatsByName(ModuleConstants.PRODUCTIVITY_MODULE).size();
+        return new ModuleStatsResource(habitCount, productivityCount, financeCount, wellnessCount);
+    }
+
 
     @GetMapping("/{uuid}/")
     @Override

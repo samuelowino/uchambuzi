@@ -6,6 +6,7 @@ import com.aplus.ldata.api.controller.base.GenericController;
 import com.aplus.ldata.api.database.SubscriptionFunnel;
 import com.aplus.ldata.api.database.repository.SubscriptionFunnelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,11 +32,11 @@ public class SubscriptionFunnelController implements GenericController<Subscript
         return new ApiResponse<>(true, "Success.");
     }
 
-    @GetMapping("/")
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public ApiResponse<List<SubscriptionFunnel>> getAll() {
+    public List<SubscriptionFunnel> getAll() {
         List<SubscriptionFunnel> dataList = repository.findAll();
-        return new ApiResponse<List<SubscriptionFunnel>>(dataList, "Success.");
+        return dataList;
     }
 
     @GetMapping("/{uuid}/")

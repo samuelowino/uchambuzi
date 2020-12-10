@@ -6,6 +6,7 @@ import com.aplus.ldata.api.controller.base.GenericController;
 import com.aplus.ldata.api.database.UserFeatureActions;
 import com.aplus.ldata.api.database.repository.UserFeatureActionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,11 +31,11 @@ public class UserFeatureActionsController implements GenericController<UserFeatu
         return new ApiResponse<>(true, "Success.");
     }
 
-    @GetMapping("/")
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public ApiResponse<List<UserFeatureActions>> getAll() {
+    public List<UserFeatureActions> getAll() {
         List<UserFeatureActions> dataList = repository.findAll();
-        return new ApiResponse<List<UserFeatureActions>>(dataList, "Success.");
+        return dataList;
     }
 
     @GetMapping("/{uuid}/")

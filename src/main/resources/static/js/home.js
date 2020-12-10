@@ -2,7 +2,7 @@
 //  npm- Browserify IMPORTS
 //==================================================================================================
 var chartjs = require('chart.js');
-
+var $ = require('jquery');
 //==================================================================================================
 //UI- Components
 //==================================================================================================
@@ -18,6 +18,8 @@ let refreshButton = document.getElementById('refresh_data');
 let moduleUsageRequest = new XMLHttpRequest();
 let sessionDataRequest = new XMLHttpRequest();
 let screenVisitsRequest = new XMLHttpRequest();
+let screenVisitsCount = 0;
+
 
 //=================================================================================================
 // EVENT LISTENERS
@@ -99,14 +101,19 @@ function initSubscriptionChar(data) {
  * @param {*} data
  */
 function initModuleUsageChart(data) {
-
+    console.log("local module chart " + data);
     let labels = [];
     let entries = [];
 
-    for (i = 0; i < data.length; i++) {
-        labels.push(data[i].moduleName);
-        entries.push(data[i].events);
-    }
+    labels.push('Habits');
+    labels.push('Productivity');
+    labels.push('Finance');
+    labels.push('Wellness');
+
+    entries.push(data.get('Habits'));
+    entries.push(data.get('Productivity'));
+    entries.push(data.get('Finance'));
+    entries.push(data.get('Wellness'));
 
     let moduleUserChartCtx = moduleChart.getContext('2d');
     let moduleChartLabel = 'Module Usage';
@@ -154,31 +161,23 @@ function initSesionChart(data) {
 //      FETCH DATA FROM BACKEND | AJAX SCRIPTS
 //==============================================================
 
-function fetchChartsData() {
-    fetchSessionData();
-    fetchModuleUsageData();
-    fetchScreenVisitsData();
+async function fetchChartsData() {
+    await fetchModuleUsageData();
+    await fetchScreenVisits();
 }
 
-function fetchSessionData() {
-    console.log('Fetching session data...');
-    sessionDataRequest.onreadystatechange = handleProcessSessionDataResponse;
-    sessionDataRequest.open('GET', '/analytics/user/screens/');
-    sessionDataRequest.send();
-}
-
-function fetchModuleUsageData() {
+async function fetchModuleUsageData() {
     console.log('Fetching module usage data...');
     moduleUsageRequest.onreadystatechange = handleProcessModuleUsageDataResponse;
-    moduleUsageRequest.open('GET', '/analytics/module/usage/');
+    moduleUsageRequest.open('GET', '/analytics/api/v1/module/stats/summary/');
     moduleUsageRequest.send();
 }
 
-function fetchScreenVisitsData() {
+async function fetchScreenVisits() {
     console.log('Fetching module usage data...');
-    moduleUsageRequest.onreadystatechange = handleProcessScreenVisitsData;
-    moduleUsageRequest.open('GET', '/analytics/screens/');
-    moduleUsageRequest.send();
+    screenVisitsRequest.onreadystatechange = handleProcessScreenVisitDataResponse;
+    screenVisitsRequest.open('GET', '/analytics/api/v1/user/screens/');
+    screenVisitsRequest.send();
 }
 
 //=========================================================================
@@ -186,48 +185,79 @@ function fetchScreenVisitsData() {
 //=========================================================================
 
 function handleProcessModuleUsageDataResponse() {
+    console.log("fetch module data response status " + moduleUsageRequest.status);
     try {
         if (moduleUsageRequest.status == 200) {
-            let data = moduleUsageRequest.responseText;
-            let jsonData = JSON.parse(data);
-            initModuleUsageChart(jsonData);
+            console.log("Fetch module stats success " + moduleUsageRequest.status);
+            let response = moduleUsageRequest.responseText;
+            console.log("module usage payload " + response);
+            let moduleUsageData = JSON.parse(response);
+            console.log('module usage moduleUsageData ' + moduleUsageData);
+
+            let habitsCount = moduleUsageData.habitsCount;
+            let productivityCount = moduleUsageData.productivityCount;
+            let wellnessCount = moduleUsageData.wellnessCount;
+            let financeCount = moduleUsageData.financeCount;
+
+            console.log('module usage: habitsCount' + habitsCount);
+            console.log('module usage: productivityCount' + productivityCount);
+            console.log('module usage: wellnessCount' + wellnessCount);
+            console.log('module usage: financeCount' + financeCount);
+
+            let data = new Map();
+            data.set('Habits', habitsCount);
+            data.set('Productivity', productivityCount);
+            data.set('wellness', wellnessCount);
+            data.set('Finance', financeCount);
+
+            console.log("data map " + data);
+            initModuleUsageChart(data);
         } else {
             console.log('Response Status ' + moduleUsageRequest.status);
         }
     } catch (e) {
-        console.log(e);
+        console.log("Error: " + e);
     }
 }
 
-function handleProcessScreenVisitsData() {
+function handleProcessScreenVisitDataResponse() {
     try {
-        if (screenVisitsRequest.status == 200) {
-            let data = screenVisitsRequest.responseText;
-            let jsonData = JSON.parse(data);
-            initScreenVisitsChart(jsonData);
+        if (screenVisitsRequest.status == 200 && screenVisitsCount === 0) {
+            console.log("Fetch module stats success " + screenVisitsRequest.status);
+            let response = screenVisitsRequest.responseText;
+            let data = JSON.parse(response);
+
+            let table = $('.home__table');
+            let tbody = table.find('tbody');
+            screenVisitsCount = data.length;
+            for (visit of data) {
+                console.log(JSON.stringify(visit));
+                tbody
+                    .append($('<tr>')
+                        .append($('<td>')
+                            .append(visit.id)
+                        ).append($('<td>')
+                            .append(visit.uuid)
+                        ).append($('<td>')
+                            .append(visit.userTag)
+                        ).append($('<td>')
+                            .append(visit.activityFragmentName)
+                        ).append($('<td>')
+                            .append(visit.createdAt)
+                        )
+                    );
+            }
+
         } else {
-            console.log('Response Status ' + screenVisitsRequest.status);
+            console.log('Response Status ' + moduleUsageRequest.status);
         }
     } catch (e) {
-        console.log(e);
-    }
-}
-
-
-function handleProcessSessionDataResponse() {
-
-    try {
-        if (sessionDataRequest.status == 200) {
-            let data = sessionDataRequest.responseText;
-            let jsonData = JSON.parse(data);
-            initSesionChart(jsonData);
-        } else {
-            console.log('Response Status ' + sessionDataRequest.status);
-        }
-    } catch (e) {
-        console.log(e);
-
+        console.log("Error: " + e);
     }
 }
 
 fetchChartsData();
+
+//-----------------------------------------------------------------------------------------
+//  LOAD HOME TABLE WITH DATA
+//=========================================================================================
