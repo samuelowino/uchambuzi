@@ -5,7 +5,10 @@ import com.aplus.ldata.api.controller.base.ApiResponse;
 import com.aplus.ldata.api.controller.base.GenericController;
 import com.aplus.ldata.api.database.UserScreenVisits;
 import com.aplus.ldata.api.database.repository.UserScreenVisitsRepository;
+import com.aplus.ldata.api.resource.UserScreenVisitsResource;
+import com.aplus.ldata.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,11 +35,27 @@ public class UserScreenVisitsController implements GenericController<UserScreenV
         return new ApiResponse<>(true, "Success.");
     }
 
-    @GetMapping("/")
     @Override
-    public ApiResponse<List<UserScreenVisits>> getAll() {
-        List<UserScreenVisits> dataList = repository.findAll();
-        return new ApiResponse<List<UserScreenVisits>>(dataList, "Success.");
+    public List<UserScreenVisits> getAll() {
+        return null;
+    }
+
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserScreenVisitsResource> getAllResource() {
+        List<UserScreenVisitsResource> dataList =  new ArrayList<>();
+        for (UserScreenVisits userScreenVisits : repository.findAll()) {
+            String createdAt = DateTimeUtils.convertDateToString(userScreenVisits.getCreatedAt());
+            UserScreenVisitsResource screenVisitsResource =
+                    new UserScreenVisitsResource(
+                            userScreenVisits.getId(),
+                            userScreenVisits.getUuid(),
+                            createdAt,
+                            userScreenVisits.getUserTag(),
+                            userScreenVisits.getActivityFragmentName()
+                            );
+            dataList.add(screenVisitsResource);
+        }
+        return dataList;
     }
 
     @GetMapping("/{uuid}/")

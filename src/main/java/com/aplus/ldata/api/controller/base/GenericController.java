@@ -6,7 +6,7 @@ public interface GenericController<E> {
 
     public ApiResponse<Boolean> create(E data);
 
-    public ApiResponse<List<E>> getAll();
+    public List<E> getAll();
 
     public ApiResponse<E> find(String uuid);
 }

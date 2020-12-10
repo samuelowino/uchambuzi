@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.aplus</groupId>
 	<artifactId>lifeplanner-data</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>war</packaging>
 	<name>Life Planner Analytics</name>
 	<description>Life Planner Analytics</description>
@@ -54,9 +54,20 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- thymeleaf -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>2.2.4</version>
+		</dependency>
 	</dependencies>
 
 	<build>
+		<finalName>analytics</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
