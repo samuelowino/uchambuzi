@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(ApiConstants.BASE_URL + "/survey")
 public class UserSurveyDataPointController {
@@ -17,7 +19,7 @@ public class UserSurveyDataPointController {
     private UserSurveyDataRepository dataRepository;
 
     @PostMapping("/")
-    public void create(@RequestBody UserSurveyData data) {
-        dataRepository.save(data);
+    public void create(@RequestBody List<UserSurveyData> data) {
+        dataRepository.saveAll(data);
     }
 }

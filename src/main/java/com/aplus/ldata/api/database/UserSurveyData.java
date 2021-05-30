@@ -1,9 +1,13 @@
 package com.aplus.ldata.api.database;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
+@Entity
 public class UserSurveyData {
 
     @Id
@@ -11,6 +15,8 @@ public class UserSurveyData {
     private long id;
     private String sessionKey;
     private String question;
+    @Lob
+    @Column(name="CONTENT", length=512)
     private String answer;
 
     public UserSurveyData() {
