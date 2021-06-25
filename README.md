@@ -1,5 +1,6 @@
-## Uchambuzi Data Visualization
+## Operation Uchambuzi
 
+> The Uchambuzi Project is a user centered usage analytics platform 
 ![Test Image 1](logo_transparent.png)
 
 ### Goals
