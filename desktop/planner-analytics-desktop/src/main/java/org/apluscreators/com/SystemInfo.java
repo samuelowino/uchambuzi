@@ -10,7 +10,7 @@ public class SystemInfo {
         return System.getProperty("javafx.version");
     }
     public static String applicationName() {
-        return "Life Planner Analytics";
+        return "Uchambuzi Analytics";
     }
 
 }

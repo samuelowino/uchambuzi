@@ -1,2 +1,2 @@
-## Life Planner Analytics Desktop
-> Life Planner analytics desktop application
+## Uchambuzi Analytics Desktop
+> Uchambuzi Analytics desktop application

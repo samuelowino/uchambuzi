@@ -12,8 +12,8 @@
 	<artifactId>lifeplanner-data</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
-	<name>Life Planner Analytics</name>
-	<description>Life Planner Analytics</description>
+	<name>Uchambuzi Analytics</name>
+	<description>Uchambuzi Analytics</description>
 
 	<properties>
 		<java.version>11</java.version>
