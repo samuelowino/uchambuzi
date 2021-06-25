@@ -1,5 +1,7 @@
 ## Uchambuzi Data Visualization
 
+![Test Image 1](logo_transparent.png)
+
 ### Goals
 
 * Visualize Important funnels
