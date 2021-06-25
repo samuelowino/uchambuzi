@@ -1,4 +1,4 @@
-## Life Planner Data Visualization
+## Uchambuzi Data Visualization
 
 ### Goals
 
