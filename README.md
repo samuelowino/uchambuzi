@@ -2,7 +2,7 @@
 
 > The Uchambuzi Project is a user centered usage analytics platform 
 > 
-![Test Image 1](logo_transparent.png)
+![Uchambuzi logo](https://user-images.githubusercontent.com/19473115/123586518-84ca3f00-d7ed-11eb-9fbe-5af3ec75ff07.png)
 
 ### Goals
 
